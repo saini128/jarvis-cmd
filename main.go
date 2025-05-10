@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// Check if required model is available
-	modelName := "qwen2.5-coder:0.5b"
+	modelName := "qwen2.5-coder:7b"
 	if !CheckModelAvailable(modelName) {
 		fmt.Println("Required model not found. Pull it with:")
 		fmt.Printf("ollama pull %s\n", modelName)
@@ -146,8 +146,7 @@ func GenerateCommand(modelName, userPrompt string) (string, error) {
 	_ = completion
 	validated, err := validateOutput(completion)
 	if err != nil {
-		fmt.Println(err.Error())
-		return string(completion), nil
+		return string(completion), err
 
 	}
 	return string(validated), nil
