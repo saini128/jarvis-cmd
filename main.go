@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// Check if required model is available
-	modelName := "qwen2.5-coder:7b"
+	modelName := "qwen2.5-coder:3b"
 	if !CheckModelAvailable(modelName) {
 		fmt.Println("Required model not found. Pull it with:")
 		fmt.Printf("ollama pull %s\n", modelName)
@@ -73,7 +73,7 @@ func main() {
 	fmt.Print("🔧 Command: ")
 	fmt.Println(command)
 	clipboard.WriteAll(command)
-
+	fmt.Println("Model Used: ", modelName)
 	fmt.Println("✅ Command copied to clipboard. Paste it with Ctrl+Shift+V or Cmd+V.")
 
 }
@@ -123,15 +123,16 @@ func CheckModelAvailable(modelName string) bool {
 
 // generateCommand sends a request to Ollama to generate a shell command
 func GenerateCommand(modelName, userPrompt string) (string, error) {
-	llm, err := ollama.New(ollama.WithModel("qwen2.5-coder:0.5b"))
+	llm, err := ollama.New(ollama.WithModel("qwen2.5-coder:3b"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	ctx := context.Background()
-	prompt := fmt.Sprintf(`You are a strict command-line assistant for Fedora 42.
+	prompt := fmt.Sprintf(`You are a strict command-line assistant for Fedora 42 user and not root.
 		Do not include explanations, descriptions, or markdown formatting.
 		Return ONLY the raw Bash command, without any quotes, comments, or formatting.
 		NO triple backticks, NO "bash" labels, and NO explanations. Only one valid Bash command per response.
+		Take care of commands that require sudo privileges.
 
 		Human: %s
 		Assistant:`, userPrompt)
