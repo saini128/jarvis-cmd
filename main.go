@@ -74,7 +74,7 @@ func main() {
 	fmt.Println(command)
 	clipboard.WriteAll(command)
 	fmt.Println("Model Used: ", modelName)
-	fmt.Println("✅ Command copied to clipboard. Paste it with Ctrl+Shift+V or Cmd+V.")
+	fmt.Println("✅ Command copied to clipboard.")
 
 }
 

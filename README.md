@@ -33,3 +33,23 @@ This cli tool is used to quickly generate shell commands by using offline availa
 | `qwen2.5-coder:3b`      | 3B    | ⚡️ Fast         | ✅✅✅ Excellent                        | Best combination of speed and accuracy observed.                                                                                    |
 
 > ✅ Recommendation: For strict Bash command output without explanations, try lighter **instruction-tuned models** like `phi2`, `phi3`, or `qwen1.5:1.8b`. They offer better speed without a significant drop in quality for this specific task. `qwen2.5-coder:3b` also shows promising results for a balance of speed and accuracy.
+
+# Auto Paste Generated Command to Terminal Cursor
+The following setup describes how to automatically paste a generated command to the terminal cursor in a Linux environment (Fedora 42), using xclip and a Fish shell function.
+
+**Prerequisites:**
+
+- `xclip`: This command-line utility is required to interact with the system's clipboard.  Ensure it is installed:
+
+```bash
+sudo dnf install xclip
+```
+**Setup in Fedora 42 (Fish Shell):**
+
+The following Fish shell function, js, will execute a command (assumed to be jarvis in this case) and then insert its output into the current command line buffer.
+```bash
+function js
+    jarvis #  Replace 'jarvis' with your command generation tool
+    commandline -i (xclip -selection clipboard -o)
+end
+```
