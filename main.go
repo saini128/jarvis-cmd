@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"errors"
 	"fmt"
@@ -14,6 +13,7 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
+	"github.com/chzyer/readline"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
@@ -59,10 +59,17 @@ func main() {
 		}
 	}
 
-	var userPrompt string
-	fmt.Println("Enter your prompt:")
-	reader := bufio.NewReader(os.Stdin)
-	userPrompt, _ = reader.ReadString('\n')
+	rl, err := readline.New("Enter your prompt: ")
+	if err != nil {
+		panic(err)
+	}
+	defer rl.Close()
+
+	userPrompt, err := rl.Readline()
+	if err != nil {
+		fmt.Printf("Error reading input: %s\n", err)
+		return
+	}
 
 	command, err := GenerateCommand(modelName, userPrompt)
 	if err != nil {
